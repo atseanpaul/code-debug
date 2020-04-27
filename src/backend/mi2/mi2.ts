@@ -598,11 +598,17 @@ export class MI2 extends EventEmitter implements IBackend {
 	async getThreads(): Promise<Thread[]> {
 		if (trace) this.log("stderr", "getThreads");
 
-		const command = "thread-info";
-		const result = await this.sendCommand(command);
-		const threads = result.result("threads");
+		if (!this.cacheThreads || !this.cachedThreads) {
+			this.log("stderr", "Fetching thread list, this might take a while.");
+			const command = "thread-info";
+			const result = await this.sendCommand(command);
+			this.cachedThreads = result.result("threads");
+		} else {
+			this.log("stderr", "Using cached threads list");
+		}
+
 		const ret: Thread[] = [];
-		return threads.map(element => {
+		return this.cachedThreads.map(element => {
 			const ret: Thread = {
 				id: parseInt(MINode.valueOf(element, "id")),
 				targetId: MINode.valueOf(element, "target-id")
@@ -796,6 +802,7 @@ export class MI2 extends EventEmitter implements IBackend {
 	prettyPrint: boolean = true;
 	printCalls: boolean;
 	debugOutput: boolean;
+	cacheThreads: boolean;
 	public procEnv: any;
 	protected isSSH: boolean;
 	protected sshReady: boolean;
@@ -807,4 +814,5 @@ export class MI2 extends EventEmitter implements IBackend {
 	protected process: ChildProcess.ChildProcess;
 	protected stream;
 	protected sshConn;
+	protected cachedThreads;
 }
