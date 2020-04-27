@@ -30,6 +30,7 @@ export class MI2DebugSession extends DebugSession {
 	protected attached: boolean;
 	protected needContinue: boolean;
 	protected isSSH: boolean;
+	protected translatePaths: boolean;
 	protected trimCWD: string;
 	protected switchCWD: string;
 	protected started: boolean;
@@ -230,7 +231,7 @@ export class MI2DebugSession extends DebugSession {
 			this.debugReady = true;
 			this.miDebugger.clearBreakPoints().then(() => {
 				let path = args.source.path;
-				if (this.isSSH) {
+				if (this.isSSH || this.translatePaths) {
 					// trimCWD is the local path, switchCWD is the ssh path
 					path = systemPath.relative(this.trimCWD.replace(/\\/g, "/"), path.replace(/\\/g, "/"));
 					path = resolve(this.switchCWD.replace(/\\/g, "/"), path.replace(/\\/g, "/"));
@@ -303,7 +304,7 @@ export class MI2DebugSession extends DebugSession {
 				let source = undefined;
 				let file = element.file;
 				if (file) {
-					if (this.isSSH) {
+					if (this.isSSH || this.translatePaths) {
 						// trimCWD is the local path, switchCWD is the ssh path
 						file = relative(this.switchCWD.replace(/\\/g, "/"), file.replace(/\\/g, "/"));
 						file = systemPath.resolve(this.trimCWD.replace(/\\/g, "/"), file.replace(/\\/g, "/"));
