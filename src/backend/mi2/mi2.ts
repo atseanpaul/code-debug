@@ -260,6 +260,23 @@ export class MI2 extends EventEmitter implements IBackend {
 		});
 	}
 
+	chroot_connect(cwd: string, sdk: string, gdb: string, executable: string, target: string): Thenable<any> {
+		return new Promise((resolve, reject) => {
+			let args = [gdb, '--interpreter=mi2', executable];
+			this.process = ChildProcess.spawn(sdk, args, { cwd: cwd, env: this.procEnv });
+			this.process.stdout.on("data", this.stdout.bind(this));
+			this.process.stderr.on("data", this.stderr.bind(this));
+			this.process.on("exit", (() => { this.emit("quit"); }).bind(this));
+			this.process.on("error", ((err) => { this.emit("launcherror", err); }).bind(this));
+			Promise.all([
+				this.sendCommand("target-select remote " + target)
+			]).then(() => {
+				this.emit("debug-ready");
+				resolve();
+			}, reject);
+		});
+	}
+
 	stdout(data) {
 		if (trace)
 			this.log("stderr", "stdout: " + data);
@@ -345,6 +362,8 @@ export class MI2 extends EventEmitter implements IBackend {
 									if (trace)
 										this.log("stderr", "stop: " + reason);
 									if (reason == "breakpoint-hit")
+										this.emit("breakpoint", parsed);
+									else if (reason == "kgdb_breakpoint")
 										this.emit("breakpoint", parsed);
 									else if (reason == "end-stepping-range")
 										this.emit("step-end", parsed);

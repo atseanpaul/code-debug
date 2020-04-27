@@ -440,6 +440,134 @@
 				]
 			},
 			{
+				"type": "crosgdb",
+				"extensions": [],
+				"program": "./out/src/crosgdb.js",
+				"runtime": "node",
+				"label": "CrOS GDB",
+				"enableBreakpointsFor": {
+					"languageIds": [
+						"c",
+						"cpp",
+						"d",
+						"objective-c",
+						"fortran",
+						"fortran-modern",
+						"fortran90",
+						"fortran_free-form",
+						"fortran_fixed-form",
+						"rust",
+						"pascal",
+						"objectpascal",
+						"ada",
+						"nim",
+						"arm",
+						"asm",
+						"vala",
+						"crystal",
+						"kotlin",
+						"zig"
+					]
+				},
+				"variables": {
+					"FileBasenameNoExt": "code-debug.getFileBasenameNoExt",
+					"FileNameNoExt": "code-debug.getFileNameNoExt"
+				},
+				"configurationAttributes": {
+					"attach": {
+						"required": [
+							"src_dir",
+							"cros_sdk_path",
+							"gdbpath",
+							"executable",
+							"cwd",
+							"target"
+						],
+						"properties": {
+							"src_dir": {
+								"type": "string",
+								"description": "Directory of CrOS source code (outside chroot)"
+							},
+							"cros_sdk_path": {
+								"type": "string",
+								"description": "Path to cros_sdk executable (outside chroot)"
+							},
+							"gdbpath": {
+								"type": "string",
+								"description": "Path to gdb executable (inside chroot)"
+							},
+							"debugger_args": {
+								"type": "string",
+								"description": "Arguments to pass to gdb"
+							},
+							"executable": {
+								"type": "string",
+								"description": "Path to the target debug executable (inside chroot)"
+							},
+							"target": {
+								"type": "string",
+								"description": "Target to attach to (inside chroot)"
+							},
+							"cacheThreads": {
+								"type": "boolean",
+								"description": "Set to true to cache the threads list on attach. This will save time for targets with a reasonably stable lot of threads",
+								"default": false
+							},
+							"valuesFormatting": {
+								"type": "string",
+								"description": "Set the way of showing variable values. 'disabled' - show value as is, 'parseText' - parse debuggers output text into structure, 'prettyPrinters' - enable debuggers custom pretty-printers if there are any",
+								"default": "parseText",
+								"enum": [
+									"disabled",
+									"parseText",
+									"prettyPrinters"
+								]
+							},
+							"printCalls": {
+								"type": "boolean",
+								"description": "Prints all GDB calls to the console",
+								"default": false
+							},
+							"showDevDebugOutput": {
+								"type": "boolean",
+								"description": "Prints all GDB responses to the console",
+								"default": false
+							},
+							"autorun": {
+								"type": "array",
+								"description": "GDB commands to run when starting to debug",
+								"default": []
+							}
+						}
+					}
+				},
+				"initialConfigurations": [
+					{
+						"name": "Debug",
+						"type": "crosgdb",
+						"request": "attach",
+						"target": "./bin/executable",
+						"cwd": "${workspaceRoot}",
+						"valuesFormatting": "parseText"
+					}
+				],
+				"configurationSnippets": [
+					{
+						"label": "GDB: Launch Program",
+						"description": "Starts the program using gdb",
+						"body": {
+							"type": "crosgdb",
+							"request": "attach",
+							"src_dir": "/home/user/s/cros/src",
+							"cros_sdk_path": "/home/user/bin/depot_tools/cros_sdk",
+							"gdbpath": "/usr/bin/x86_64-cros-linux-gdb",
+							"debugger_args": "",
+							"executable": "/build/atlas/usr/lib/debug/boot/vmlinux"
+						}
+					}
+				]
+			},
+			{
 				"type": "lldb-mi",
 				"extensions": [],
 				"program": "./out/src/lldb.js",
