@@ -9,6 +9,7 @@ import { posix } from "path";
 import * as nativePath from "path";
 const path = posix;
 import { Client } from "ssh2";
+import { Thenable } from "thenable";
 
 export function escape(str: string) {
 	return str.replace(/\\/g, "\\\\").replace(/"/g, "\\\"");

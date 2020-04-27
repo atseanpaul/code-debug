@@ -1,5 +1,6 @@
 import { MINode } from "./mi_parse";
 import { DebugProtocol } from "vscode-debugprotocol/lib/debugProtocol";
+import { Thenable } from "thenable";
 
 export type ValuesFormattingMode = "disabled" | "parseText" | "prettyPrinters";
 

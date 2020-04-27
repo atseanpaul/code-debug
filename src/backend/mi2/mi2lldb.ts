@@ -3,6 +3,7 @@ import { Breakpoint } from "../backend";
 import * as ChildProcess from "child_process";
 import { posix } from "path";
 import * as nativePath from "path";
+import { Thenable } from "thenable";
 const path = posix;
 
 export class MI2_LLDB extends MI2 {
