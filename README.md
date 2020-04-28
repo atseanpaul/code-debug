@@ -8,6 +8,32 @@ Press ctrl-p (cmd+p on OS X) and run `ext install webfreak.debug` in visual stud
 
 ![Preview](images/preview.png)
 
+## Debugging
+
+Launch the code-debug server from vscode, it will listen on port 4711
+
+Launch the extension from vscode, it will open a new window. Open a project (cros kernel) which can be debugged by crosgdb. Add "debugServer": 4711 to the crosgdb configuration:
+
+```
+"configurations": [
+        {
+            "name": "crosgdb",
+            "type": "crosgdb",
+            ...
+            "debugServer": 4711,
+            ...
+	}
+]
+```
+
+Your extension will now connect with the code-debug server and you can debug from there.
+
+## Packaging the Extension
+
+```
+node_modules/vsce/out/vsce package -o <OUTPUT_DIR>/code-debug.vsix
+```
+
 ## Usage
 
 ![Image with red circle around a gear and a red arrow pointing at GDB and LLDB](images/tutorial1.png)
