@@ -925,14 +925,16 @@
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"dependencies": {
+		"ssh2": "^0.8.2",
+		"vsce": "^1.75.0",
 		"vscode-debugadapter": "^1.16.0",
-		"vscode-debugprotocol": "^1.16.0",
-		"ssh2": "^0.8.2"
+		"vscode-debugprotocol": "^1.16.0"
 	},
 	"devDependencies": {
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^11.11.3",
 		"mocha": "^6.0.2",
+		"thenable": "1.0.0",
 		"tslint": "^5.14.0",
 		"tslint-language-service": "^0.9.9",
 		"typescript": "^3.3.3333",
