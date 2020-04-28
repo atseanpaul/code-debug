@@ -14,7 +14,7 @@ export interface AttachRequestArguments extends DebugProtocol.AttachRequestArgum
 	cros_sdk_path: string;
 	gdbpath: string;
 	debugger_args: string[];
-	cache_threads: boolean;
+	cacheThreads: boolean;
 	executable: string;
 	target: string;
 	valuesFormatting: ValuesFormattingMode;
@@ -53,7 +53,7 @@ class CrosGDBDebugSession extends MI2DebugSession {
 
 		this.setValuesFormattingMode(args.valuesFormatting);
 
-		this.miDebugger.cacheThreads = args.cache_threads;
+		this.miDebugger.cacheThreads = !!args.cacheThreads;
 		this.miDebugger.printCalls = !!args.printCalls;
 		this.miDebugger.debugOutput = !!args.showDevDebugOutput;
 
